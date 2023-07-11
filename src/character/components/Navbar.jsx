@@ -1,14 +1,15 @@
-import { AppBar, Toolbar, Typography } from '@mui/material'
+import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
 import React from 'react'
 
-export const Navbar = () => {
+export const Navbar = ({width}) => {
   return (
-    <AppBar 
-    position='fix'
-    
-    >
-        <Typography>Hola</Typography>
-
+    <AppBar position="static">
+      <Toolbar>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          r&mAPI
+        </Typography>
+      </Toolbar>
     </AppBar>
+
   )
 }

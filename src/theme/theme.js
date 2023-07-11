@@ -5,14 +5,14 @@ import { red } from '@mui/material/colors';
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#<div>App</div>',
+      main: '#4f7c9c',
     },
     secondary: {
-      main: '#d33b40',
+      main: '#d1412e',
     },
     neutral:{
-        light: '#FFF8F2',
-        main: '#FFFFFF'
+        light: '#f0edeb',
+        main: '#1c2331'
     },
   },
 });
