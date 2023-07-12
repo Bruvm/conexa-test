@@ -1,38 +1,36 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { useState } from "react"
-import { Button, CardActionArea, Skeleton } from '@mui/material';
-import { Box } from '@mui/system';
+import { Box, Card, CardActionArea, CardContent, CardMedia, Grid, Skeleton, Typography } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
+import React from 'react';
 
-import './charactersCard.css'
+export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter }) => {
+  const handleClick = character => {
+    onSelectCharacter(character);
+  };
 
-export const CharactersCard = ({ name, image, species, status, listSource, onCharacterClick, selectedFirstCharacter}) => {
-
-    const [request, setRequest] = useState(false)
-
-    setTimeout(() => {
-        setRequest(true)
-    }, 5000);
-    const handleCharacterClick = () => {
-        onCharacterClick(name, listSource);
-    };
-
-  
-
-    return (
-        <>
-            <Card sx={{ maxWidth: '100%' }} onClick={handleCharacterClick} >
-                <CardActionArea>
+  return (
+    <Grid container spacing={3} >
+     
+        {characters.map(character => (
+           <Grid item xs={3}key={character.id}>
+          <Card
+            
+            onClick={() => handleClick(character)}
+            style={{
+              border: selectedCharacter === character ? '2px solid blue' : 'none',
+              padding: '10px',
+              cursor: 'pointer',
+              marginBottom: '10px',
+              backgroundColor: '#f1f1f1',
+            }}
+          >
+             <CardActionArea>
                     {
-                        request ?
+                        characters ?
                             <CardMedia
                                 component="img"
                                 height="200"
-                                image={image}
-                                alt={name}
+                                image={character.image}
+                                alt={character.name}
                             />
                             :
                             <Skeleton variant="rectangular" width={'100%'} height={200} />
@@ -40,11 +38,11 @@ export const CharactersCard = ({ name, image, species, status, listSource, onCha
 
                     <CardContent>
                         {
-                            request ?
+                            characters ?
                                 <Box sx={{ display: 'flex' }}>
                                     <CircleIcon style={{ fontSize: '10px', fill: status === 'Alive' ? 'green' : status === 'Dead' ? 'red' : 'gray' }} />
                                     <Typography variant="body2" color="secondary.main">
-                                        {name} - {species}
+                                        {character.name} - {character.species}
                                     </Typography>
                                 </Box>
                                 :
@@ -59,8 +57,11 @@ export const CharactersCard = ({ name, image, species, status, listSource, onCha
                     </CardContent>
 
                 </CardActionArea>
-            </Card >
-        </>
+          </Card>
 
-    );
-}
+          </Grid>
+        ))}
+     
+    </Grid>
+  );
+};

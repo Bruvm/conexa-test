@@ -1,146 +1,134 @@
-import { Box, Card, CardActions, CardContent, CardMedia, Collapse, Grid, IconButton, Pagination, Typography } from '@mui/material'
-import { CharacterLayout } from '../layout/CharacterLayout'
-import { ExpandMore } from '@mui/icons-material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { CharactersCard } from '../components/CharactersCard';
-
+import React, { useState, useEffect } from 'react';
+import { Grid, Pagination, Typography } from '@mui/material';
 import axios from 'axios';
-import { useEffect, useState } from "react";
+import { config } from '../../config';
+
+
+
+import { CharacterList, EpisodeList, SharedEpisodeList } from '../components';
+import { CharacterLayout } from '../layout';
 
 export const Character = () => {
+    //const [characters, setCharacters] = useState([]);
+    const [charactersOne, setCharactersOne] = useState([]);
+    const [charactersTwo, setCharactersTwo] = useState([]);
+    const [selectedCharacter1, setSelectedCharacter1] = useState(null);
+    const [selectedCharacter2, setSelectedCharacter2] = useState(null);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [nextPage, setNextPage] = useState();
-  const [prevPage, setPrevPage] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [nextPage, setNextPage] = useState();
+    const [prevPage, setPrevPage] = useState();
 
-  const [firstList, setFirstList] = useState([]);
-  const [secondList, setSecondList] = useState([]);
+    useEffect(() => {
+        getCharacters();
+    }, [currentPage]);
 
+    const getCharacters = async () => {
+        try {
+            const response = await axios.get(
+                `${config.api.API_URL}character?page=${currentPage}`
+            );
+            console.log(response)
+            setNextPage(response.data.info.next);
+            setPrevPage(response.data.info.prev);
+            setCharactersOne(response.data.results.slice(0, Math.ceil(response.data.results.length / 2)));
+            setCharactersTwo(response.data.results.slice(Math.ceil(response.data.results.length / 2)));
 
-  useEffect(() => {
-    getCharacters();
-  }, [currentPage]);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-  const getCharacters = async () => {
-    try {
-      const response = await axios.get(
-        `https://rickandmortyapi.com/api/character?page=${currentPage}`
-      );
-      console.log(response)
+    const handlePageChange = (event, page) => {
+        setCurrentPage(page);
+        setSelectedCharacter1(null);
+        setSelectedCharacter2(null);
+    };
 
-      //setCharacters(response.data.results);
-      setNextPage(response.data.info.next);
-      setPrevPage(response.data.info.prev);
+    const handleCharacter1Select = character => {
+        setSelectedCharacter1(character);
+    };
 
-      const firstList = response.data.results.filter(
-        (character, index) => index % 2 === 0
-      );
-      const secondList = response.data.results.filter(
-        (character, index) => index % 2 !== 0
-      );
+    const handleCharacter2Select = character => {
+        setSelectedCharacter2(character);
+    };
 
-
-      setFirstList(firstList);
-      setSecondList(secondList);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
-  const handlePageChange = (event, page) => {
-    setCurrentPage(page);
-  };
-
-    const [selectedFirstCharacter, setSelectedFirstCharacter] = useState(null);
-    const [selectedSecondCharacter, setSelectedSecondCharacter] = useState(null);
-
-
-  const handleCharacterClick = (name, listSource) => {
-
-    if(listSource === 'firstList'){
-      console.log('este es el firt', name)
-      setSelectedFirstCharacter(name);
-    }else if(listSource === 'secondList'){
-       console.log('este es el second', name)
-       setSelectedSecondCharacter(name);
-    }
-    
-  };
+    return (
+        <CharacterLayout>
+            <Typography>
+                Rick and Morty Characters
+            </Typography>
+            <Grid container spacing={3}>
+                <Grid item xs={6}>
 
 
-  return (
-    <CharacterLayout>
-      <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <Grid container spacing={3} >
+                    <Grid item xs={12}>
+                        <Typography>Characters #1</Typography>
 
-            <Grid item xs={12}>
-              <Typography>Characters #1</Typography>
-            </Grid>
-            {
-              firstList.map((character) => (
-                <Grid item xs={4} key={character.id}>
-                  <CharactersCard
-                    key={character.id}
-                    {...character}
-                    listSource="firstList"
-                    onCharacterClick={handleCharacterClick}
-                  ></CharactersCard>
+                    </Grid>
+                    <CharacterList
+                        characters={charactersOne}
+                        selectedCharacter={selectedCharacter1}
+                        onSelectCharacter={handleCharacter1Select}
+                    />
+
+
+
+
                 </Grid>
-              ))
-            }
-          </Grid>
-        </Grid>
-        <Grid item xs={6}>
-          <Grid container spacing={3} >
-            <Grid item xs={12}>
-              <Typography>Characters #2</Typography>
-            </Grid>
-            {
-              secondList.map((character) => (
-                <Grid item xs={4} key={character.id}>
-                  <CharactersCard
-                    key={character.id}
-                    {...character}
-                    listSource="secondList"
-                    onCharacterClick={handleCharacterClick}
-                    selectedFirstCharacter={selectedFirstCharacter}
-                  ></CharactersCard>
+
+                <Grid item xs={6}>
+
+                    <Grid container spacing={3} >
+
+                        <Grid item xs={12}>
+                            <Typography>Characters #2</Typography>
+                            <CharacterList
+                                characters={charactersTwo}
+                                selectedCharacter={selectedCharacter2}
+                                onSelectCharacter={handleCharacter2Select}
+                            />
+                        </Grid>
+                    </Grid>
+
+
                 </Grid>
-              ))
-            }
-          </Grid>
-        </Grid>
-      </Grid>
 
 
-      <Pagination
-        count={42} // Reemplaza con el valor adecuado
-        page={currentPage}
-        onChange={handlePageChange}
-        nextlink={nextPage}
-        prevlink={prevPage}
-      />
+                <Pagination
+                    count={42} // Reemplaza con el valor adecuado
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    nextlink={nextPage}
+                    prevlink={prevPage}
+                />
+
+            </Grid>
 
 
+            <Grid container>
 
-      <Box>
-        Character #1
+                <Grid item xs={4}>
+                    <Typography variant='h5'>Character #1 - Episodes</Typography>
 
-            <Typography variant='h1'>{selectedFirstCharacter}</Typography>
-      </Box>
-      <Box>
-        Character #1 and Character #2
-      </Box>
+                    {selectedCharacter1 && selectedCharacter2 ? <EpisodeList character={selectedCharacter1} /> : ''}
+                </Grid>
+                <Grid item xs={4}>
+                    <Typography variant='h5'>Character #1 & Character #2 - Shared Episodes</Typography>
+                    {selectedCharacter1 && selectedCharacter2 && (
+                        <SharedEpisodeList
+                            character1={selectedCharacter1}
+                            character2={selectedCharacter2}
+                        />
+                    )}
+                </Grid>
+                <Grid item xs={4}>
+                    <Typography variant='h5'>Character #2 - Episodes</Typography>
+                    {selectedCharacter2 && selectedCharacter1 ? <EpisodeList character={selectedCharacter2} /> : ''}
+                </Grid>
+            </Grid>
+        </CharacterLayout>
+    );
+};
 
-      <Box>
-        Character #2
 
-        <Typography variant='h1'>{selectedSecondCharacter}</Typography>
-      </Box>
-
-    </CharacterLayout >
-  )
-}
