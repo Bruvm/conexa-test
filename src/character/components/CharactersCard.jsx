@@ -3,22 +3,28 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { useState } from "react"
-import { CardActionArea, Skeleton } from '@mui/material';
+import { Button, CardActionArea, Skeleton } from '@mui/material';
 import { Box } from '@mui/system';
+import CircleIcon from '@mui/icons-material/Circle';
 
+import './charactersCard.css'
 
-export const CharactersCard = ({ name, image, species }) => {
+export const CharactersCard = ({ name, image, species, status, listSource, onCharacterClick, selectedFirstCharacter}) => {
 
     const [request, setRequest] = useState(false)
 
     setTimeout(() => {
         setRequest(true)
     }, 5000);
+    const handleCharacterClick = () => {
+        onCharacterClick(name, listSource);
+    };
 
+  
 
     return (
         <>
-            <Card sx={{ maxWidth: '100%' }} >
+            <Card sx={{ maxWidth: '100%' }} onClick={handleCharacterClick} >
                 <CardActionArea>
                     {
                         request ?
@@ -35,9 +41,12 @@ export const CharactersCard = ({ name, image, species }) => {
                     <CardContent>
                         {
                             request ?
-                                <Typography variant="body2" color="secondary.main">
-                                    {name} - {species}
-                                </Typography>
+                                <Box sx={{ display: 'flex' }}>
+                                    <CircleIcon style={{ fontSize: '10px', fill: status === 'Alive' ? 'green' : status === 'Dead' ? 'red' : 'gray' }} />
+                                    <Typography variant="body2" color="secondary.main">
+                                        {name} - {species}
+                                    </Typography>
+                                </Box>
                                 :
                                 <>
                                     <Box sx={{ pt: 0.5 }}>
@@ -45,7 +54,10 @@ export const CharactersCard = ({ name, image, species }) => {
                                     </Box>
                                 </>
                         }
+
+
                     </CardContent>
+
                 </CardActionArea>
             </Card >
         </>
