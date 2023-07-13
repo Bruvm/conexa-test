@@ -25,7 +25,7 @@ export const EpisodeList = ({ character }) => {
 
 
   return (
-    <Box sx={{ height: '400px', overflowY: 'auto', scrollbarColor: 'red' }}>
+    <Box sx={{ height: '400px', overflowY: 'auto' }}>
       {Array.isArray(episodes) && episodes.length > 0 ? (
         episodes.map(episode => (
           <Box key={episode.id} sx={{margin: '20px 10px 10px 10px'}}>
