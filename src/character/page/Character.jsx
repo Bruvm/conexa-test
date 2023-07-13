@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Divider, Grid, IconButton, Pagination, SwipeableDrawer, Typography } from '@mui/material';
+import { Alert, Box, Button, Divider, Grid, IconButton, Pagination, SwipeableDrawer, Typography } from '@mui/material';
 import axios from 'axios';
 import { config } from '../../config';
 
@@ -92,6 +92,10 @@ export const Character = () => {
             }
 
             <Grid container spacing={12}>
+
+                <Grid item xs="12">
+                <Alert severity="success">If you have never entered the app, click on your favorite character to discover more information about it</Alert>
+                </Grid>
 
                 <Grid item md={6} xs={12}>
                     <Grid item xs={12}>
