@@ -1,4 +1,7 @@
+import { Box, Divider, Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
+import LiveTvIcon from '@mui/icons-material/LiveTv';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 export const SharedEpisodeList = ({ characters, character1, character2 }) => {
   const [sharedEpisodes, setSharedEpisodes] = useState([]);
@@ -22,15 +25,27 @@ export const SharedEpisodeList = ({ characters, character1, character2 }) => {
   };
 
   return (
-    <div>
-
+    <Box sx={{ height: '400px', overflowY: 'auto' }}>
       {sharedEpisodes.map(episode => (
-        <div key={episode.id}>
-          <h3>{episode.name}</h3>
-          <p>Episode: {episode.episode}</p>
-        </div>
+         <Box key={episode.id} sx={{margin: '20px 10px 10px 10px'}}>
+         <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+           <LiveTvIcon style={{ fontSize: '20px', fill: 'primary.main', marginRight: '5px' }} />
+           <Typography variant='body2' sx={{ fontWeight: '600' }}>{episode.name} | {episode.episode}</Typography>
+         </Box>
+         
+
+         <Box sx={{ display: 'flex', alignItems: 'center' }}>
+           <CalendarMonthIcon style={{ fontSize: '20px', fill: 'primary.main', marginRight: '5px' }} />
+           <Typography variant='body2' sx={{ fontWeight: '600' }}>{episode.air_date}</Typography>
+         </Box>
+        
+
+         <Divider sx={{marginTop: '10px'}} />
+
+
+       </Box>
       ))}
-    </div>
+    </Box>
   );
 };
 

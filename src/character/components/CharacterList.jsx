@@ -1,67 +1,77 @@
+import React, { useState } from 'react';
 import { Box, Card, CardActionArea, CardContent, CardMedia, Grid, Skeleton, Typography } from '@mui/material';
-import CircleIcon from '@mui/icons-material/Circle';
-import React from 'react';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import Face5Icon from '@mui/icons-material/Face5';
 
-export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter }) => {
+export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter, loading }) => {
+
   const handleClick = character => {
     onSelectCharacter(character);
   };
 
   return (
-    <Grid container spacing={3} >
-     
-        {characters.map(character => (
-           <Grid item xs={3}key={character.id}>
+    <Grid container spacing={3} id="characters" >
+
+      {characters.map(character => (
+        <Grid item xs={3} key={character.id}>
           <Card
-            
+
             onClick={() => handleClick(character)}
-            style={{
-              border: selectedCharacter === character ? '2px solid blue' : 'none',
-              padding: '10px',
+            sx={{
+             
               cursor: 'pointer',
-              marginBottom: '10px',
-              backgroundColor: '#f1f1f1',
+              backgroundColor:  selectedCharacter === character ? '#daeb95' : '#f1f1f1',
             }}
           >
-             <CardActionArea>
-                    {
-                        characters ?
-                            <CardMedia
-                                component="img"
-                                height="200"
-                                image={character.image}
-                                alt={character.name}
-                            />
-                            :
-                            <Skeleton variant="rectangular" width={'100%'} height={200} />
-                    }
+            <CardActionArea>
+            
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={character.image}
+                    alt={character.name}
+                  />
+                 
 
-                    <CardContent>
-                        {
-                            characters ?
-                                <Box sx={{ display: 'flex' }}>
-                                    <CircleIcon style={{ fontSize: '10px', fill: status === 'Alive' ? 'green' : status === 'Dead' ? 'red' : 'gray' }} />
-                                    <Typography variant="body2" color="secondary.main">
-                                        {character.name} - {character.species}
-                                    </Typography>
-                                </Box>
-                                :
-                                <>
-                                    <Box sx={{ pt: 0.5 }}>
-                                        <Skeleton />
-                                    </Box>
-                                </>
-                        }
+              <CardContent>
+         
+                  
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant='body1' color={'primary.main'}>
+                          {character.name}
+                        </Typography>
+                      </Box>
+
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+
+                        <FavoriteIcon style={{ fontSize: '15px', fill: character.status === 'Alive' ? 'green' : character.status === 'Dead' ? 'red' : 'gray', marginRight: '5px' }} />
+                        <Typography>
+                          {character.status}
+                        </Typography>
+                      </Box>
+
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+
+                        <Face5Icon style={{ fontSize: '15px', fill: '#43a047' }} />
+                        <Typography>
+                          {character.species}
+                        </Typography>
+                      </Box>
+
+                  
 
 
-                    </CardContent>
 
-                </CardActionArea>
+              </CardContent>
+
+            </CardActionArea>
+
+          
           </Card>
 
-          </Grid>
-        ))}
-     
+        </Grid>
+      ))}
+
     </Grid>
   );
 };
