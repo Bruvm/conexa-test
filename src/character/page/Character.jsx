@@ -1,268 +1,173 @@
-import { Card, CardActions, CardContent, CardMedia, Collapse, Grid, IconButton, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import { CharacterLayout } from '../layout/CharacterLayout'
-import { ExpandMore } from '@mui/icons-material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { CharactersCard } from '../components/CharactersCard';
+import React, { useState, useEffect } from 'react';
+import { Button, Divider, Grid, Pagination, SwipeableDrawer, Typography } from '@mui/material';
+import axios from 'axios';
+import { config } from '../../config';
 
-const characters = [
-  {
-    "id": 21,
-    "name": "Aqua Morty",
-    "status": "unknown",
-    "species": "Humanoid",
-    "type": "Fish-Person",
-    "gender": "Male",
-    "origin": {
-      "name": "unknown",
-      "url": ""
-    },
-    "location": {
-      "name": "Citadel of Ricks",
-      "url": "https://rickandmortyapi.com/api/location/3"
-    },
-    "image": "https://rickandmortyapi.com/api/character/avatar/21.jpeg",
-    "episode": [
-      "https://rickandmortyapi.com/api/episode/10",
-      "https://rickandmortyapi.com/api/episode/22"
-    ],
-    "url": "https://rickandmortyapi.com/api/character/21",
-    "created": "2017-11-04T22:39:48.055Z"
-  },
-  {
-    "id": 22,
-    "name": "Aqua Rick",
-    "status": "unknown",
-    "species": "Humanoid",
-    "type": "Fish-Person",
-    "gender": "Male",
-    "origin": {
-      "name": "unknown",
-      "url": ""
-    },
-    "location": {
-      "name": "Citadel of Ricks",
-      "url": "https://rickandmortyapi.com/api/location/3"
-    },
-    "image": "https://rickandmortyapi.com/api/character/avatar/22.jpeg",
-    "episode": [
-      "https://rickandmortyapi.com/api/episode/10",
-      "https://rickandmortyapi.com/api/episode/22",
-      "https://rickandmortyapi.com/api/episode/28"
-    ],
-    "url": "https://rickandmortyapi.com/api/character/22",
-    "created": "2017-11-04T22:41:07.171Z"
-  },
-  {
-    "id": 23,
-    "name": "Arcade Alien",
-    "status": "unknown",
-    "species": "Alien",
-    "type": "",
-    "gender": "Male",
-    "origin": {
-      "name": "unknown",
-      "url": ""
-    },
-    "location": {
-      "name": "Immortality Field Resort",
-      "url": "https://rickandmortyapi.com/api/location/7"
-    },
-    "image": "https://rickandmortyapi.com/api/character/avatar/23.jpeg",
-    "episode": [
-      "https://rickandmortyapi.com/api/episode/13",
-      "https://rickandmortyapi.com/api/episode/19",
-      "https://rickandmortyapi.com/api/episode/21",
-      "https://rickandmortyapi.com/api/episode/25",
-      "https://rickandmortyapi.com/api/episode/26"
-    ],
-    "url": "https://rickandmortyapi.com/api/character/23",
-    "created": "2017-11-05T08:43:05.095Z"
-  },
-  {
-    "id": 24,
-    "name": "Armagheadon",
-    "status": "Alive",
-    "species": "Alien",
-    "type": "Cromulon",
-    "gender": "Male",
-    "origin": {
-      "name": "Signus 5 Expanse",
-      "url": "https://rickandmortyapi.com/api/location/22"
-    },
-    "location": {
-      "name": "Signus 5 Expanse",
-      "url": "https://rickandmortyapi.com/api/location/22"
-    },
-    "image": "https://rickandmortyapi.com/api/character/avatar/24.jpeg",
-    "episode": [
-      "https://rickandmortyapi.com/api/episode/16"
-    ],
-    "url": "https://rickandmortyapi.com/api/character/24",
-    "created": "2017-11-05T08:48:30.776Z"
-  },
-  {
-    "id": 25,
-    "name": "Armothy",
-    "status": "Dead",
-    "species": "unknown",
-    "type": "Self-aware arm",
-    "gender": "Male",
-    "origin": {
-      "name": "Post-Apocalyptic Earth",
-      "url": "https://rickandmortyapi.com/api/location/8"
-    },
-    "location": {
-      "name": "Post-Apocalyptic Earth",
-      "url": "https://rickandmortyapi.com/api/location/8"
-    },
-    "image": "https://rickandmortyapi.com/api/character/avatar/25.jpeg",
-    "episode": [
-      "https://rickandmortyapi.com/api/episode/23"
-    ],
-    "url": "https://rickandmortyapi.com/api/character/25",
-    "created": "2017-11-05T08:54:29.343Z"
-  },
-  {
-    "id": 26,
-    "name": "Arthricia",
-    "status": "Alive",
-    "species": "Alien",
-    "type": "Cat-Person",
-    "gender": "Female",
-    "origin": {
-      "name": "Purge Planet",
-      "url": "https://rickandmortyapi.com/api/location/9"
-    },
-    "location": {
-      "name": "Purge Planet",
-      "url": "https://rickandmortyapi.com/api/location/9"
-    },
-    "image": "https://rickandmortyapi.com/api/character/avatar/26.jpeg",
-    "episode": [
-      "https://rickandmortyapi.com/api/episode/20"
-    ],
-    "url": "https://rickandmortyapi.com/api/character/26",
-    "created": "2017-11-05T08:56:46.165Z"
-  },
-  {
-    "id": 27,
-    "name": "Artist Morty",
-    "status": "Alive",
-    "species": "Human",
-    "type": "",
-    "gender": "Male",
-    "origin": {
-      "name": "unknown",
-      "url": ""
-    },
-    "location": {
-      "name": "Citadel of Ricks",
-      "url": "https://rickandmortyapi.com/api/location/3"
-    },
-    "image": "https://rickandmortyapi.com/api/character/avatar/27.jpeg",
-    "episode": [
-      "https://rickandmortyapi.com/api/episode/10",
-      "https://rickandmortyapi.com/api/episode/28"
-    ],
-    "url": "https://rickandmortyapi.com/api/character/27",
-    "created": "2017-11-05T08:59:07.457Z"
-  },
-  {
-    "id": 28,
-    "name": "Attila Starwar",
-    "status": "Alive",
-    "species": "Human",
-    "type": "",
-    "gender": "Male",
-    "origin": {
-      "name": "unknown",
-      "url": ""
-    },
-    "location": {
-      "name": "Interdimensional Cable",
-      "url": "https://rickandmortyapi.com/api/location/6"
-    },
-    "image": "https://rickandmortyapi.com/api/character/avatar/28.jpeg",
-    "episode": [
-      "https://rickandmortyapi.com/api/episode/8",
-      "https://rickandmortyapi.com/api/episode/13",
-      "https://rickandmortyapi.com/api/episode/17"
-    ],
-    "url": "https://rickandmortyapi.com/api/character/28",
-    "created": "2017-11-05T09:02:16.595Z"
-  },
-  {
-    "id": 29,
-    "name": "Baby Legs",
-    "status": "Alive",
-    "species": "Human",
-    "type": "Human with baby legs",
-    "gender": "Male",
-    "origin": {
-      "name": "unknown",
-      "url": ""
-    },
-    "location": {
-      "name": "Interdimensional Cable",
-      "url": "https://rickandmortyapi.com/api/location/6"
-    },
-    "image": "https://rickandmortyapi.com/api/character/avatar/29.jpeg",
-    "episode": [
-      "https://rickandmortyapi.com/api/episode/8"
-    ],
-    "url": "https://rickandmortyapi.com/api/character/29",
-    "created": "2017-11-05T09:06:19.644Z"
-  },
-  {
-    "id": 30,
-    "name": "Baby Poopybutthole",
-    "status": "Alive",
-    "species": "Poopybutthole",
-    "type": "",
-    "gender": "Male",
-    "origin": {
-      "name": "unknown",
-      "url": ""
-    },
-    "location": {
-      "name": "unknown",
-      "url": ""
-    },
-    "image": "https://rickandmortyapi.com/api/character/avatar/30.jpeg",
-    "episode": [
-      "https://rickandmortyapi.com/api/episode/31"
-    ],
-    "url": "https://rickandmortyapi.com/api/character/30",
-    "created": "2017-11-05T09:13:16.483Z"
-  },
-]
+
+
+import { CharacterList, EpisodeList, SharedEpisodeList } from '../components';
+import { CharacterLayout } from '../layout';
+import { SkeletonCard } from '../components/SkeletonCard';
 
 export const Character = () => {
+    //const [characters, setCharacters] = useState([]);
+    const [charactersOne, setCharactersOne] = useState([]);
+    const [charactersTwo, setCharactersTwo] = useState([]);
+    const [selectedCharacter1, setSelectedCharacter1] = useState(null);
+    const [selectedCharacter2, setSelectedCharacter2] = useState(null);
 
- 
-  const [expanded, setExpanded] = useState(false)
+    const [loading, setloading] = useState(false)
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-  return (
-    <CharacterLayout>
-      <Grid container spacing={5}>
-        {
-          characters.map((character) => (
-            <Grid item xs={3}>
-              <CharactersCard key={character.id} {...character}></CharactersCard>
-            </Grid>
-          ))
+    const [currentPage, setCurrentPage] = useState(1);
+    const [nextPage, setNextPage] = useState();
+    const [prevPage, setPrevPage] = useState();
+
+    useEffect(() => {
+        getCharacters();
+    }, [currentPage]);
+
+    const getCharacters = async () => {
+        try {
+            const response = await axios.get(
+                `${config.api.API_URL}character?page=${currentPage}`
+            );
+            setloading(true)
+            setNextPage(response.data.info.next);
+            setPrevPage(response.data.info.prev);
+            setCharactersOne(response.data.results.slice(0, Math.ceil(response.data.results.length / 2)));
+            setCharactersTwo(response.data.results.slice(Math.ceil(response.data.results.length / 2)));
+
+        } catch (error) {
+            console.log(error);
         }
-      </Grid>
+    };
+
+    const handlePageChange = (event, page) => {
+        setCurrentPage(page);
+        setSelectedCharacter1(null);
+        setSelectedCharacter2(null);
+    };
+
+    const handleCharacter1Select = character => {
+        setSelectedCharacter1(character);
+    };
+
+    const handleCharacter2Select = character => {
+        setSelectedCharacter2(character);
+    };
+
+
+
+    const [open, setOpen] = useState(false);
+
+    const toggleDrawer = (open) => (event) => {
+        if (
+            event &&
+            event.type === 'keydown' &&
+            (event.key === 'Tab' || event.key === 'Shift')
+        ) {
+            return;
+        }
+
+        setOpen(open);
+    };
+
+    useEffect(() => {
+        console.log({ selectedCharacter1, selectedCharacter2 })
+        if (selectedCharacter1 != null && selectedCharacter2 != null) {
+
+            setOpen(true);
+            console.log(open)
+        }
+
+    }, [selectedCharacter1, selectedCharacter2]);
+
+    return (
+        <CharacterLayout sx={{position: 'relative'}}>
+            <Button sx={{ position: 'absolute', bottom: 16, right: 16 }}>
+                        ver mas
+                    </Button>
+            <Grid container spacing={15}>
+
+                <Grid item md={6} xs={12}>
+                    <Grid item xs={12}>
+                        <Typography variant='h5' sx={{ marginBottom: '20px' }}>Characters #1</Typography>
+
+                    </Grid>
+                    <CharacterList
+                        characters={charactersOne}
+                        selectedCharacter={selectedCharacter1}
+                        onSelectCharacter={handleCharacter1Select}
+                        loading={loading}
+                    />
+                </Grid>
+
+
+                <Grid item md={6} xs={12}>
+                    <Grid container spacing={3} >
+                        <Grid item xs={12}>
+                            <Typography variant='h5' sx={{ marginBottom: '20px' }}>Characters #2</Typography>
+                            <CharacterList
+                                characters={charactersTwo}
+                                selectedCharacter={selectedCharacter2}
+                                onSelectCharacter={handleCharacter2Select}
+                                loading={loading}
+                            />
+                        </Grid>
+                    </Grid>
+
+                </Grid>
+
+
+                <Grid xs={12} sx={{ margin: '50px 0', display: 'flex', justifyContent: 'center' }}>
+                    
+                    <Pagination
+                        count={42}
+                        page={currentPage}
+                        onChange={handlePageChange}
+                        nextlink={nextPage}
+                        prevlink={prevPage}
+                    />
+                </Grid>
+
+            </Grid>
 
 
 
 
+            <SwipeableDrawer
+                anchor="bottom"
+                open={open}
+                onClose={toggleDrawer(false)}
+                onOpen={toggleDrawer(true)}
+            >
 
-    </CharacterLayout>
-  )
-}
+
+                <Grid container spacing={4}>
+                    <Grid item xs={4} >
+                        <Typography variant='h5' color={'primary.main'} sx={{ paddingTop: '20px', paddingBottom: '20px', fontWeight: 'bold' }}>Character #1 - Episodes</Typography>
+                        {selectedCharacter1 && selectedCharacter2 ? <EpisodeList character={selectedCharacter1} /> : ''}
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography variant='h5' color={'primary.main'} sx={{ paddingTop: '20px', paddingBottom: '20px', fontWeight: 'bold' }}>Shared Episodes</Typography>
+                        {selectedCharacter1 && selectedCharacter2 && (
+                            <SharedEpisodeList
+                                character1={selectedCharacter1}
+                                character2={selectedCharacter2}
+                            />
+                        )}
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography variant='h5' color={'primary.main'} sx={{ paddingTop: '20px', paddingBottom: '20px', fontWeight: 'bold' }}>Character #2 - Episodes</Typography>
+                        {selectedCharacter2 && selectedCharacter1 ? <EpisodeList character={selectedCharacter2} /> : ''}
+                    </Grid>
+                </Grid>
+            </SwipeableDrawer>
+
+
+
+        </CharacterLayout >
+    );
+};
+
+
