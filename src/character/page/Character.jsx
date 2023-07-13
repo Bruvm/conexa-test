@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Divider, Grid, Pagination, SwipeableDrawer, Typography } from '@mui/material';
+import { Alert, Box, Button, Divider, Grid, IconButton, Pagination, SwipeableDrawer, Typography } from '@mui/material';
 import axios from 'axios';
 import { config } from '../../config';
 
@@ -8,7 +8,7 @@ import { config } from '../../config';
 import { CharacterList, EpisodeList, SharedEpisodeList } from '../components';
 import { CharacterLayout } from '../layout';
 import { SkeletonCard } from '../components/SkeletonCard';
-
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 export const Character = () => {
     //const [characters, setCharacters] = useState([]);
     const [charactersOne, setCharactersOne] = useState([]);
@@ -83,11 +83,19 @@ export const Character = () => {
     }, [selectedCharacter1, selectedCharacter2]);
 
     return (
-        <CharacterLayout sx={{position: 'relative'}}>
-            <Button sx={{ position: 'absolute', bottom: 16, right: 16 }}>
-                        ver mas
-                    </Button>
-            <Grid container spacing={15}>
+        <CharacterLayout >
+            {selectedCharacter1 && selectedCharacter2 ?
+                <IconButton onClick={toggleDrawer(true)} size="large" sx={{ position: 'fixed', bottom: 16, right: 16, zIndex: 99, backgroundColor: 'primary.main', ':hover': { backgroundColor: 'primary.main', opacity: 0.9 } }}>
+                    <KeyboardArrowUpIcon />
+                </IconButton>
+                : ""
+            }
+
+            <Grid container spacing={12}>
+
+                <Grid item xs="12">
+                <Alert severity="success">If you have never entered the app, click on your favorite character to discover more information about it</Alert>
+                </Grid>
 
                 <Grid item md={6} xs={12}>
                     <Grid item xs={12}>
@@ -119,15 +127,17 @@ export const Character = () => {
                 </Grid>
 
 
-                <Grid xs={12} sx={{ margin: '50px 0', display: 'flex', justifyContent: 'center' }}>
-                    
-                    <Pagination
-                        count={42}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                        nextlink={nextPage}
-                        prevlink={prevPage}
-                    />
+                <Grid xs={12} >
+                    <Box sx={{ margin: '50px 0', display: 'flex', justifyContent: 'center' }}>
+                        <Pagination
+                            count={42}
+                            page={currentPage}
+                            onChange={handlePageChange}
+                            nextlink={nextPage}
+                            prevlink={prevPage}
+                        />
+                    </Box>
+
                 </Grid>
 
             </Grid>

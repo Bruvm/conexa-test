@@ -13,7 +13,7 @@ export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter
     <Grid container spacing={3} id="characters" >
 
       {characters.map(character => (
-        <Grid item xs={3} key={character.id}>
+        <Grid item lg={4} xs={6}  key={character.id}>
           <Card
 
             onClick={() => handleClick(character)}
@@ -37,7 +37,7 @@ export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter
          
                   
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography variant='body1' color={'primary.main'}>
+                        <Typography variant='body1' sx={{fontWeight: 600}}>
                           {character.name}
                         </Typography>
                       </Box>

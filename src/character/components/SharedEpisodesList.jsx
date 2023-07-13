@@ -7,7 +7,7 @@ export const SharedEpisodeList = ({ characters, character1, character2 }) => {
   const [sharedEpisodes, setSharedEpisodes] = useState([]);
 
   useEffect(() => {
-
+    console.log(sharedEpisodes)
     getSharedEpisodes();
   }, [character1, character2]);
 
@@ -22,29 +22,45 @@ export const SharedEpisodeList = ({ characters, character1, character2 }) => {
     );
 
     setSharedEpisodes(episodesWithBothCharacters);
+ 
   };
 
   return (
     <Box sx={{ height: '400px', overflowY: 'auto' }}>
-      {sharedEpisodes.map(episode => (
-         <Box key={episode.id} sx={{margin: '20px 10px 10px 10px'}}>
-         <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-           <LiveTvIcon style={{ fontSize: '20px', fill: 'primary.main', marginRight: '5px' }} />
-           <Typography variant='body2' sx={{ fontWeight: '600' }}>{episode.name} | {episode.episode}</Typography>
-         </Box>
-         
 
-         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-           <CalendarMonthIcon style={{ fontSize: '20px', fill: 'primary.main', marginRight: '5px' }} />
-           <Typography variant='body2' sx={{ fontWeight: '600' }}>{episode.air_date}</Typography>
-         </Box>
-        
+      {
 
-         <Divider sx={{marginTop: '10px'}} />
+        sharedEpisodes >= 0 ?
+
+          <Typography variant='body'>
+            No episodes shared yet.
+          </Typography>
+          :
+          
+          sharedEpisodes.map(episode => (
+            <Box key={episode.id} sx={{ margin: '20px 10px 10px 10px' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                <LiveTvIcon style={{ fontSize: '20px', fill: 'primary.main', marginRight: '5px' }} />
+                <Typography variant='body2' sx={{ fontWeight: '600' }}>{episode.name} | {episode.episode}</Typography>
+              </Box>
 
 
-       </Box>
-      ))}
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <CalendarMonthIcon style={{ fontSize: '20px', fill: 'primary.main', marginRight: '5px' }} />
+                <Typography variant='body2' sx={{ fontWeight: '600' }}>{episode.air_date}</Typography>
+              </Box>
+
+
+              <Divider sx={{ marginTop: '10px' }} />
+
+
+            </Box>
+          ))
+
+
+
+      }
+
     </Box>
   );
 };
