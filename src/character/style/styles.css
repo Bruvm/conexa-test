@@ -1,15 +1,11 @@
 .header{
     height: 90vh;
-   display: flex;
-   flex-direction: column;
-    align-items:normal;
-    justify-content: center;
+
    border-bottom: 3px solid #bfde42 ;
    background-image: url(../../assests/img/bg.png);
    background-repeat: no-repeat;
    background-position-y:bottom;
    background-position-x: right;
    background-size: 40%;
-   padding-left: 120px;
     
 }
