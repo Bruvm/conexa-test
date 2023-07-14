@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { Box, Card, CardActionArea, CardContent, CardMedia, Grid, Skeleton, Typography } from '@mui/material';
+import { Box, Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Face5Icon from '@mui/icons-material/Face5';
 
-export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter, loading }) => {
+export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter }) => {
 
   const handleClick = character => {
     onSelectCharacter(character);
@@ -11,67 +10,48 @@ export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter
 
   return (
     <Grid container spacing={3} id="characters" >
-
       {characters.map(character => (
-        <Grid item lg={4} xs={6}  key={character.id}>
+        <Grid item lg={4} xs={6} key={character.id}>
           <Card
-
             onClick={() => handleClick(character)}
             sx={{
-             
               cursor: 'pointer',
-              backgroundColor:  selectedCharacter === character ? '#daeb95' : '#f1f1f1',
+              backgroundColor: selectedCharacter === character ? '#daeb95' : '#f1f1f1',
             }}
           >
             <CardActionArea>
-            
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={character.image}
-                    alt={character.name}
-                  />
-                 
+              <CardMedia
+                component="img"
+                height="200"
+                image={character.image}
+                alt={character.name}
+              />
 
               <CardContent>
-         
-                  
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography variant='body1' sx={{fontWeight: 600}}>
-                          {character.name}
-                        </Typography>
-                      </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant='body1' sx={{ fontWeight: 600 }}>
+                    {character.name}
+                  </Typography>
+                </Box>
 
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <FavoriteIcon style={{ fontSize: '15px', fill: character.status === 'Alive' ? 'green' : character.status === 'Dead' ? 'red' : 'gray', marginRight: '5px' }} />
+                  <Typography>
+                    {character.status}
+                  </Typography>
+                </Box>
 
-                        <FavoriteIcon style={{ fontSize: '15px', fill: character.status === 'Alive' ? 'green' : character.status === 'Dead' ? 'red' : 'gray', marginRight: '5px' }} />
-                        <Typography>
-                          {character.status}
-                        </Typography>
-                      </Box>
-
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
-                        <Face5Icon style={{ fontSize: '15px', fill: '#43a047' }} />
-                        <Typography>
-                          {character.species}
-                        </Typography>
-                      </Box>
-
-                  
-
-
-
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Face5Icon style={{ fontSize: '15px', fill: '#43a047' }} />
+                  <Typography>
+                    {character.species}
+                  </Typography>
+                </Box>
               </CardContent>
-
             </CardActionArea>
-
-          
           </Card>
-
         </Grid>
       ))}
-
     </Grid>
   );
 };

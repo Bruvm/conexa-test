@@ -1,65 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Box, Button, Divider, Grid, IconButton, Pagination, SwipeableDrawer, Typography } from '@mui/material';
-import axios from 'axios';
-import { config } from '../../config';
+import { Alert, Box, Grid, IconButton, Pagination, SwipeableDrawer, Typography } from '@mui/material';
 
 
-
-import { CharacterList, EpisodeList, SharedEpisodeList } from '../components';
+import { CharacterList, EpisodeList, SharedEpisodeList, SkeletonCard } from '../components';
 import { CharacterLayout } from '../layout';
-import { SkeletonCard } from '../components/SkeletonCard';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { useCharacterData } from '../hooks';
 export const Character = () => {
-    //const [characters, setCharacters] = useState([]);
-    const [charactersOne, setCharactersOne] = useState([]);
-    const [charactersTwo, setCharactersTwo] = useState([]);
-    const [selectedCharacter1, setSelectedCharacter1] = useState(null);
-    const [selectedCharacter2, setSelectedCharacter2] = useState(null);
-
-    const [loading, setloading] = useState(false)
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const [nextPage, setNextPage] = useState();
-    const [prevPage, setPrevPage] = useState();
-
-    useEffect(() => {
-        getCharacters();
-    }, [currentPage]);
-
-    const getCharacters = async () => {
-        try {
-            const response = await axios.get(
-                `${config.api.API_URL}character?page=${currentPage}`
-            );
-            setloading(true)
-            setNextPage(response.data.info.next);
-            setPrevPage(response.data.info.prev);
-            setCharactersOne(response.data.results.slice(0, Math.ceil(response.data.results.length / 2)));
-            setCharactersTwo(response.data.results.slice(Math.ceil(response.data.results.length / 2)));
-
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handlePageChange = (event, page) => {
-        setCurrentPage(page);
-        setSelectedCharacter1(null);
-        setSelectedCharacter2(null);
-    };
-
-    const handleCharacter1Select = character => {
-        setSelectedCharacter1(character);
-    };
-
-    const handleCharacter2Select = character => {
-        setSelectedCharacter2(character);
-    };
-
-
+    const {
+        charactersOne,
+        charactersTwo,
+        selectedCharacter1,
+        selectedCharacter2,
+        loading,
+        currentPage,
+        nextPage,
+        prevPage,
+        handlePageChange,
+        handleCharacter1Select,
+        handleCharacter2Select,
+    } = useCharacterData();
 
     const [open, setOpen] = useState(false);
-
     const toggleDrawer = (open) => (event) => {
         if (
             event &&
@@ -68,18 +30,11 @@ export const Character = () => {
         ) {
             return;
         }
-
         setOpen(open);
     };
 
     useEffect(() => {
-        console.log({ selectedCharacter1, selectedCharacter2 })
-        if (selectedCharacter1 != null && selectedCharacter2 != null) {
-
-            setOpen(true);
-            console.log(open)
-        }
-
+        if (selectedCharacter1 != null && selectedCharacter2 != null) setOpen(true);
     }, [selectedCharacter1, selectedCharacter2]);
 
     return (
@@ -93,21 +48,26 @@ export const Character = () => {
 
             <Grid container spacing={12}>
 
-                <Grid item xs="12">
-                <Alert severity="success">If you have never entered the app, click on your favorite character to discover more information about it</Alert>
-                </Grid>
+                {/*          <Grid item xs={12}>
+                    <Alert severity="success">If you have never entered the app, click on your favorite character to discover more information about it</Alert>
+                </Grid> */}
 
                 <Grid item md={6} xs={12}>
                     <Grid item xs={12}>
                         <Typography variant='h5' sx={{ marginBottom: '20px' }}>Characters #1</Typography>
 
                     </Grid>
-                    <CharacterList
-                        characters={charactersOne}
-                        selectedCharacter={selectedCharacter1}
-                        onSelectCharacter={handleCharacter1Select}
-                        loading={loading}
-                    />
+                    {charactersOne ?
+                        <CharacterList
+                            characters={charactersOne}
+                            selectedCharacter={selectedCharacter1}
+                            onSelectCharacter={handleCharacter1Select}
+                            loading={loading}
+                        />
+                        :
+                        <SkeletonCard repeat={10} />
+
+                    }
                 </Grid>
 
 
@@ -115,19 +75,23 @@ export const Character = () => {
                     <Grid container spacing={3} >
                         <Grid item xs={12}>
                             <Typography variant='h5' sx={{ marginBottom: '20px' }}>Characters #2</Typography>
-                            <CharacterList
-                                characters={charactersTwo}
-                                selectedCharacter={selectedCharacter2}
-                                onSelectCharacter={handleCharacter2Select}
-                                loading={loading}
-                            />
+                            {charactersTwo ?
+                                <CharacterList
+                                    characters={charactersTwo}
+                                    selectedCharacter={selectedCharacter2}
+                                    onSelectCharacter={handleCharacter2Select}
+                                    loading={loading}
+                                />
+                                :
+                                <SkeletonCard repeat={10} />
+                            }
                         </Grid>
                     </Grid>
 
                 </Grid>
 
 
-                <Grid xs={12} >
+                <Grid item xs={12} >
                     <Box sx={{ margin: '50px 0', display: 'flex', justifyContent: 'center' }}>
                         <Pagination
                             count={42}
