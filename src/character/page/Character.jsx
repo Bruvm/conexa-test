@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Box, Grid, IconButton, Pagination, SwipeableDrawer, Typography } from '@mui/material';
+import { Alert, Box, Grid, IconButton, Pagination, SwipeableDrawer, Typography, Button } from '@mui/material';
 
 
 import { CharacterList, EpisodeList, SharedEpisodeList, SkeletonCard } from '../components';
@@ -40,17 +40,17 @@ export const Character = () => {
     return (
         <CharacterLayout >
             {selectedCharacter1 && selectedCharacter2 ?
-                <IconButton onClick={toggleDrawer(true)} size="large" sx={{ position: 'fixed', bottom: 16, right: 16, zIndex: 99, backgroundColor: 'primary.main', ':hover': { backgroundColor: 'primary.main', opacity: 0.9 } }}>
-                    <KeyboardArrowUpIcon />
-                </IconButton>
+                <Button onClick={toggleDrawer(true)} variant="contained" sx={{ position: 'fixed', bottom: 16, right: 16, zIndex: 99 }}>
+                    Show again <KeyboardArrowUpIcon />
+                </Button>
                 : ""
             }
 
-            <Grid container spacing={12}>
+            <Grid container spacing={12} >
 
-                {/*          <Grid item xs={12}>
-                    <Alert severity="success">If you have never entered the app, click on your favorite character to discover more information about it</Alert>
-                </Grid> */}
+                <Grid item xs={12}>
+                    <Alert severity="info"> <strong> If it's your first time here, you can click on your favorites characters to get more information about them. </strong></Alert>
+                </Grid>
 
                 <Grid item md={6} xs={12}>
                     <Grid item xs={12}>
@@ -72,7 +72,7 @@ export const Character = () => {
 
 
                 <Grid item md={6} xs={12}>
-                    <Grid container spacing={3} >
+
                         <Grid item xs={12}>
                             <Typography variant='h5' sx={{ marginBottom: '20px' }}>Characters #2</Typography>
                             {charactersTwo ?
@@ -86,7 +86,6 @@ export const Character = () => {
                                 <SkeletonCard repeat={10} />
                             }
                         </Grid>
-                    </Grid>
 
                 </Grid>
 
@@ -117,13 +116,13 @@ export const Character = () => {
             >
 
 
-                <Grid container spacing={4}>
+                <Grid container spacing={4} sx={{ p: 3 }}>
                     <Grid item xs={4} >
-                        <Typography variant='h5' color={'primary.main'} sx={{ paddingTop: '20px', paddingBottom: '20px', fontWeight: 'bold' }}>Character #1 - Episodes</Typography>
+                        <Typography variant='h5' color={'primary.main'} sx={{ paddingBottom: '20px', fontWeight: 'bold' }}> {selectedCharacter1 && selectedCharacter1.name} - Episodes</Typography>
                         {selectedCharacter1 && selectedCharacter2 ? <EpisodeList character={selectedCharacter1} /> : ''}
                     </Grid>
                     <Grid item xs={4}>
-                        <Typography variant='h5' color={'primary.main'} sx={{ paddingTop: '20px', paddingBottom: '20px', fontWeight: 'bold' }}>Shared Episodes</Typography>
+                        <Typography variant='h5' color={'primary.main'} sx={{ paddingBottom: '20px', fontWeight: 'bold' }}>Shared Episodes</Typography>
                         {selectedCharacter1 && selectedCharacter2 && (
                             <SharedEpisodeList
                                 character1={selectedCharacter1}
@@ -132,7 +131,7 @@ export const Character = () => {
                         )}
                     </Grid>
                     <Grid item xs={4}>
-                        <Typography variant='h5' color={'primary.main'} sx={{ paddingTop: '20px', paddingBottom: '20px', fontWeight: 'bold' }}>Character #2 - Episodes</Typography>
+                        <Typography variant='h5' color={'primary.main'} sx={{ paddingBottom: '20px', fontWeight: 'bold' }}>{selectedCharacter2 && selectedCharacter2.name} - Episodes</Typography>
                         {selectedCharacter2 && selectedCharacter1 ? <EpisodeList character={selectedCharacter2} /> : ''}
                     </Grid>
                 </Grid>

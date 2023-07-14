@@ -1,7 +1,7 @@
 import { Box, Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+//import FavoriteIcon from '@mui/icons-material/Favorite';
 import Face5Icon from '@mui/icons-material/Face5';
-
+import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
 export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter }) => {
 
   const handleClick = character => {
@@ -35,14 +35,14 @@ export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <FavoriteIcon style={{ fontSize: '15px', fill: character.status === 'Alive' ? 'green' : character.status === 'Dead' ? 'red' : 'gray', marginRight: '5px' }} />
+                  <HeartBrokenIcon style={{ fontSize: '15px', fill: character.status === 'Alive' ? 'green' : character.status === 'Dead' ? 'red' : 'gray', marginRight: '5px' }} />
                   <Typography>
                     {character.status}
                   </Typography>
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Face5Icon style={{ fontSize: '15px', fill: '#43a047' }} />
+                  <Face5Icon style={{ fontSize: '15px', fill: '#43a047',  marginRight: '5px'}} />
                   <Typography>
                     {character.species}
                   </Typography>

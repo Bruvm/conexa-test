@@ -29,7 +29,7 @@ export const CharacterLayout = ({ children }) => {
             <Grid item xs={12} >
                 <Box
                     component='main'
-                    sx={{ p: 3, marginTop: '50px' }}
+                    sx={{ p: 3, }}
                 >
                     {children}
                 </Box>
