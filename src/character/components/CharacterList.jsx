@@ -1,7 +1,8 @@
 import { Box, Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-//import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Face5Icon from '@mui/icons-material/Face5';
 import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter }) => {
 
   const handleClick = character => {
@@ -35,7 +36,16 @@ export const CharacterList = ({ characters, selectedCharacter, onSelectCharacter
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <HeartBrokenIcon style={{ fontSize: '15px', fill: character.status === 'Alive' ? 'green' : character.status === 'Dead' ? 'red' : 'gray', marginRight: '5px' }} />
+                  {
+                    character.status === 'Alive' ?
+                    <FavoriteIcon style={{ fontSize: '15px', fill: 'green', marginRight: '5px' }}/>
+                    :
+                    character.status === 'Dead' ?
+                    <HeartBrokenIcon style={{ fontSize: '15px', fill: 'red', marginRight: '5px' }} />
+                    :
+                    <QuestionMarkIcon style={{ fontSize: '15px', fill: 'gray', marginRight: '5px' }}/>
+                  }
+                  
                   <Typography>
                     {character.status}
                   </Typography>

@@ -9,7 +9,7 @@ export const CharacterLayout = ({ children }) => {
 
     setTimeout(() => {
         setStart(true)
-    }, 1000);
+    }, 2000);
     return (
         <Grid
             container
